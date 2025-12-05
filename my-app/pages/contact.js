@@ -1,27 +1,85 @@
 'use client'
+
+import { useState } from "react";
+
 export default function Contact() {
-    return(
-        <div className="flex  flex-col content-center justify-center gap-10  ">
-            <h1 className="text-4xl text-center m-4"> This is the sample Form</h1>
-        <form className=" flex flex-col text-2xl gap-9 content-evenly mt-10" >
-<div className="flex justify-evenly text-3xl gap-10">
-    <label htmlFor="Name" >Name-</label>
-<input type="text" name="name" placeholder="type your name" required></input>
-</div>
-<div className="flex justify-evenly text-3xl gap-10">
-    <label htmlFor="email">Email-</label>
-<input type="email" name="email" placeholder="type your email" required></input>
-</div>
-<div className="flex justify-evenly text-3xl gap-9">
-    <label htmlFor="message">Message-</label>
-<textarea type="text" name="message"  placeholder="type your message" required></textarea>
-</div>
-<div className="flex justify-evenly text-3xl">
-    <button  className="p-2 m-2 text-2xl h-22 w-50 rounded-md bg-teal-300">SUBMIT</button></div>
+    const [name,set_name]=useState("");
+    const [email,set_email]=useState("");
+    const [message,set_message]=useState("");
+    
+async   function submit_handler(e) {
+        e.preventDefault();
+        const data={
+            name:name,
+            email:email,
+            message:message
+        }
+        console.log("this is the data"+data)
+        const a=await fetch("/api/contact",{method: "POST",
+            headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data)}); 
+    }
+    return (
+        <div className="flex flex-col items-center justify-center py-10">
+            <h1 className="text-4xl text-center mb-10">
+                This is the sample Form
+            </h1>
 
+            <form className="flex flex-col gap-6 w-full max-w-md text-xl">
 
-        </form>
+                {/* Name */}
+                <div className="flex flex-col gap-2">
+                    <label htmlFor="name" className="text-2xl font-semibold">Name</label>
+                    <input 
+                        className="border p-3 rounded-md" 
+                        type="text" 
+                        name="name" 
+                        placeholder="type your name" 
+                        required 
+                        onChange={(e)=>{set_name(e.target.value)
+                            console.log(e.target.value)}
+                        }
+                    />
+                </div>
+
+                {/* Email */}
+                <div className="flex flex-col gap-2">
+                    <label htmlFor="email" className="text-2xl font-semibold">Email</label>
+                    <input 
+                        className="border p-3 rounded-md" 
+                        type="email" 
+                        name="email" 
+                        placeholder="type your email" 
+                        required 
+                          onChange={(e)=>{set_email(e.target.value)
+                            console.log(e.target.value)}
+                        }
+                    />
+                </div>
+
+                {/* Message */}
+                <div className="flex flex-col gap-2">
+                    <label htmlFor="message" className="text-2xl font-semibold">Message</label>
+                    <textarea 
+                        className="border p-3 rounded-md h-32 resize-none" 
+                        name="message"  
+                        placeholder="type your message" 
+                        required
+                          onChange={(e)=>{set_message(e.target.value)
+                            console.log(e.target.value)}
+                        }
+                    ></textarea>
+                </div>
+
+                {/* Submit */}
+                <button  onClick={submit_handler}
+                    className="p-3 mt-4 text-2xl rounded-md bg-teal-400 hover:bg-teal-500 transition"
+                >
+                    SUBMIT
+                </button>
+            </form>
         </div>
     )
-    
 }
