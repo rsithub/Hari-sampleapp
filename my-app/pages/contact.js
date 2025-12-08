@@ -14,7 +14,6 @@ async   function submit_handler(e) {
             email:email,
             message:message
         }
-        console.log("this is the data"+data)
         const a=await fetch("/api/contact",{method: "POST",
             headers: {
     "Content-Type": "application/json",
